@@ -1,0 +1,41 @@
+makeMatrix <- function(mat = matrix()) {
+    inv <- NULL 
+
+    set <- function(new_mat) {
+        mat <<- new_mat
+        inv <<- NULL
+    }
+
+    get <- function() {
+        mat
+    }
+
+    setinverse <- function(inverse) {
+        inv <<- inverse
+    }
+
+    getinverse <- function() {
+        inv
+    }
+
+    list(set = set, get = get,
+         setinverse = setinverse,
+         getinverse = getinverse)
+}
+
+cacheinverse <- function(matrix_obj, ...) {
+    inv <- matrix_obj$getinverse()
+
+    if (!is.null(inv)) {
+        message("Getting cached inverse")
+        return(inv)
+    }
+
+    matrix_data <- matrix_obj$get()
+
+    inv <- solve(matrix_data, ...)
+
+    matrix_obj$setinverse(inv)
+
+    inv
+}
